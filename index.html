@@ -3,34 +3,283 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welcome | Trustworthy Product Reviews</title>
-  <meta http-equiv="Cache-Control" content="no-store" />
-  <link rel="stylesheet" href="css/landing.css" />
+  <title>Trustworthy Product Reviews</title>
+  <meta name="description" content="Crowd-powered, trust-weighted product reviews. Follow reviewers you like, see similar users by Jaccard distance, and surface the most reliable opinions." />
+  <style>
+    :root{
+      --bg: #0b1020;
+      --card: rgba(255,255,255,0.06);
+      --text: #e6e9f2;
+      --muted:#a6aec9;
+      --brand:#7c9aff;
+      --brand-2:#9f7cff;
+      --accent:#36e0a1;
+      --danger:#ff5470;
+      --ring: rgba(124,154,255,0.55);
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: radial-gradient(1200px 900px at 10% -10%, rgba(124,154,255,.15), transparent 60%),
+                  radial-gradient(1000px 800px at 110% 10%, rgba(159,124,255,.13), transparent 60%),
+                  linear-gradient(180deg, #0b1020 0%, #0a0d19 100%);
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1100px, 92%); margin-inline:auto}
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(11,16,32,.75), rgba(11,16,32,.35));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:700}
+    .badge{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); padding:6px 10px; border:1px solid rgba(255,255,255,.08); border-radius:999px}
+    .badge b{color:var(--text)}
+    .menu{display:flex; gap:18px; align-items:center}
+    .menu a{color:var(--muted); font-size:14px}
+    .menu a:hover{color:var(--text)}
+
+    .hero{display:grid; grid-template-columns:1.1fr .9fr; gap:28px; align-items:center; padding:64px 0 48px}
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr; padding:40px 0 20px} }
+
+    h1{font-size: clamp(34px, 4.3vw, 58px); line-height:1.05; margin:0 0 14px; letter-spacing:-.5px}
+    .lead{font-size: clamp(16px, 1.6vw, 19px); color:var(--muted); max-width:62ch}
+
+    .card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .cta-row{display:flex; gap:14px; align-items:center; margin-top:26px}
+
+    .google-btn{
+      display:inline-flex; align-items:center; gap:12px;
+      padding:14px 18px; border-radius:12px; font-weight:600; font-size:16px;
+      background: linear-gradient(180deg, #ffffff, #ececec);
+      color:#131722; border:1px solid #dcdcdc; box-shadow:0 6px 20px rgba(0,0,0,.20);
+      transform: translateZ(0);
+    }
+    .google-btn:hover{ filter:brightness(.98) }
+    .google-btn:focus{ outline: 3px solid var(--ring); outline-offset:3px }
+
+    .ghost-btn{ padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.14); color:var(--text)}
+    .ghost-btn:hover{ background:rgba(255,255,255,.06)}
+
+    .mock{
+      aspect-ratio: 16/10; border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.09); position:relative; overflow:hidden;
+      background: radial-gradient(600px 260px at 20% 0%, rgba(124,154,255,.22), transparent 60%),
+                  linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+    }
+    .spark{
+      position:absolute; inset:auto -10% 8% -10%; height:50%; background:
+      radial-gradient(450px 160px at 20% 40%, rgba(124,154,255,.22), transparent 60%),
+      radial-gradient(450px 160px at 80% 60%, rgba(159,124,255,.22), transparent 60%);
+      filter: blur(30px); pointer-events:none
+    }
+
+    .features{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin:30px 0 60px }
+    @media (max-width: 900px){ .features{grid-template-columns:1fr; margin: 20px 0 40px} }
+    .feature{ padding:18px; display:grid; grid-template-columns:auto 1fr; gap:12px }
+    .feature h3{margin:4px 0 6px; font-size:18px}
+    .feature p{margin:0; color:var(--muted); font-size:14px}
+    .icon{ display:grid; place-items:center; width:38px; height:38px; border-radius:10px; background: linear-gradient(180deg, rgba(124,154,255,.25), rgba(159,124,255,.25)); border:1px solid rgba(255,255,255,.14)}
+
+    .strip{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px }
+    .chip{ font-size:12px; color:var(--muted); border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px }
+
+    footer{
+      border-top:1px solid rgba(255,255,255,.08); padding:18px 0 40px; color:var(--muted); font-size:14px
+    }
+
+    /* reduce motion */
+    @media (prefers-reduced-motion: no-preference){
+      .float{animation: float 7s ease-in-out infinite}
+      @keyframes float{ 0%{ transform: translateY(0)} 50%{ transform: translateY(-8px)} 100%{ transform: translateY(0)} }
+    }
+    html {
+     scroll-behavior: smooth;
+    }
+
+  </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="content">
-      <h1>Trustworthy Product Reviews</h1>
-      <p>Discover honest insights from verified users — powered by data transparency and trust.</p>
-      <a class="btn" href="https://trustworthy-product-reviews-group24-gmacdubmd2cahgh0.canadacentral-01.azurewebsites.net">
-        Sign In with Google
+  <header>
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Trustworthy Product Reviews home">
+        <!-- star logo -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2l2.7 6.3 6.8.5-5.2 4.5 1.7 6.7L12 16.8 5 20l1.7-6.7L1.5 8.8l6.8-.5L12 2z" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#7c9aff"/>
+              <stop offset="1" stop-color="#9f7cff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>Trustworthy Product Reviews</span>
       </a>
     </div>
   </header>
 
-  <section class="info">
-    <h2>Why Trustworthy Product Reviews?</h2>
-    <p>
-      Our platform collects real feedback from verified users and leverages secure authentication 
-      through Google to ensure that every review you see comes from a real person.
-    </p>
-    <p>
-      Explore product categories, follow users you trust, and enjoy authentic, bias-free reviews.
-    </p>
-  </section>
+  <main id="top" class="container">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title" style="margin-top:110px;">
+      <div>
+        <h1 id="hero-title">Reviews you can actually trust.</h1>
+        <p class="lead">Follow reviewers you value, filter by your network, and rank products using similarity (Jaccard) so the signal rises above the noise. Your taste, amplified.</p>
+        <div class="cta-row">
+          <!-- REQUIRED: Sign in with Google button that redirects to your provided link -->
+          <a class="google-btn" href="https://trustworthy-product-reviews-group24-gmacdubmd2cahgh0.canadacentral-01.azurewebsites.net" aria-label="Sign in with Google">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.5 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C33.7 6.1 29.1 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16.2 18.9 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C33.7 6.1 29.1 4 24 4 15.5 4 8.3 9.1 6.3 14.7z"/>
+              <path fill="#4CAF50" d="M24 44c5 0 9.6-1.9 13.1-5.1l-6.1-5.2C29.1 35.8 26.7 36 24 36c-5.2 0-9.6-3.5-11.3-8.3l-6.5 5C8.2 38.9 15.5 44 24 44z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.3-3.6 5.9-6.8 7.2l.1.1 6.1 5.2C40.1 39.9 44 32.9 44 24c0-1.2-.1-2.3-.4-3.5z"/>
+            </svg>
+            <span>Sign in with Google</span>
+          </a>
+          <a class="ghost-btn" href="#how-it-works">Learn more</a>
+        </div>
+      </div>
+
+
+      <!-- UI Mock / Illustration (static) -->
+      <div class="mock float card" role="img" aria-label="Illustration of trust-weighted product ranking UI">
+        <div class="spark"></div>
+        <div style="position:absolute; inset:18px; display:grid; grid-template-rows:auto 1fr; gap:12px">
+          <div style="display:flex; justify-content:space-between; align-items:center">
+            <div style="display:flex; gap:8px; align-items:center">
+              <div style="width:30px; height:30px; border-radius:8px; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.14)"></div>
+              <div style="width:150px; height:10px; border-radius:999px; background:rgba(255,255,255,.16)"></div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center">
+              <div style="width:80px; height:10px; border-radius:999px; background:rgba(255,255,255,.12)"></div>
+              <div style="width:10px; height:10px; border-radius:50%; background:rgba(54,224,161,.7)"></div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1.2fr .8fr; gap:12px; height:100%">
+            <div class="card" style="background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); padding:12px; display:grid; gap:10px">
+              <!-- mock rows -->
+              <div style="display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center">
+                <div style="width:46px; height:46px; border-radius:10px; background:rgba(255,255,255,.09)"></div>
+                <div>
+                  <div style="width:220px; height:10px; border-radius:999px; background:rgba(255,255,255,.17)"></div>
+                  <div style="width:140px; height:10px; border-radius:999px; background:rgba(255,255,255,.11); margin-top:8px"></div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px">
+                  <div title="Average rating" style="width:78px; height:10px; border-radius:999px; background:linear-gradient(90deg, var(--accent), rgba(54,224,161,.2))"></div>
+                  <div title="Similarity score" style="width:44px; height:22px; border-radius:8px; background:rgba(124,154,255,.22); border:1px solid rgba(255,255,255,.14)"></div>
+                </div>
+              </div>
+              <div style="height:1px; background:rgba(255,255,255,.06)"></div>
+              <div style="display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center">
+                <div style="width:46px; height:46px; border-radius:10px; background:rgba(255,255,255,.09)"></div>
+                <div>
+                  <div style="width:240px; height:10px; border-radius:999px; background:rgba(255,255,255,.17)"></div>
+                  <div style="width:160px; height:10px; border-radius:999px; background:rgba(255,255,255,.11); margin-top:8px"></div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px">
+                  <div title="Average rating" style="width:68px; height:10px; border-radius:999px; background:linear-gradient(90deg, var(--accent), rgba(54,224,161,.2))"></div>
+                  <div title="Similarity score" style="width:44px; height:22px; border-radius:8px; background:rgba(159,124,255,.22); border:1px solid rgba(255,255,255,.14)"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); padding:12px">
+              <div style="display:grid; gap:10px">
+                <div style="width:60%; height:10px; border-radius:999px; background:rgba(255,255,255,.15)"></div>
+                <div style="width:90%; height:10px; border-radius:999px; background:rgba(255,255,255,.10)"></div>
+                <div style="width:80%; height:10px; border-radius:999px; background:rgba(255,255,255,.10)"></div>
+                <div style="width:70%; height:10px; border-radius:999px; background:rgba(255,255,255,.10)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" aria-labelledby="features-title">
+      <h2 id="features-title" style="font-size:22px; margin:10px 0 14px; color:#cdd5f6">Why this works</h2>
+      <div class="features">
+        <article class="feature card">
+          <div class="icon" aria-hidden="true">★</div>
+          <div>
+            <h3>Follow reviewers</h3>
+            <p>Build your own trusted graph by following people whose opinions you like. Their reviews get more weight in your lists.</p>
+          </div>
+        </article>
+        <article class="feature card">
+          <div class="icon" aria-hidden="true">≋</div>
+          <div>
+            <h3>Network‑weighted rankings</h3>
+            <p>View products ranked by the average rating of everyone, or only the users you follow.</p>
+          </div>
+        </article>
+        <article class="feature card">
+          <div class="icon" aria-hidden="true">∩</div>
+          <div>
+            <h3>Similarity by Jaccard</h3>
+            <p>See whose taste overlaps with yours using Jaccard distance, then filter reviews by your closest matches.</p>
+          </div>
+        </article>
+        <article class="feature card">
+          <div class="icon" aria-hidden="true">#</div>
+          <div>
+            <h3>Category leaderboards</h3>
+            <p>Browse categories and surface the highest‑rated products with clean, transparent scoring.</p>
+          </div>
+        </article>
+        <article class="feature card">
+          <div class="icon" aria-hidden="true">↔</div>
+          <div>
+            <h3>Degrees of trust</h3>
+            <p>See degrees of separation next to each reviewer so you always know how close they are to you.</p>
+          </div>
+        </article>
+        <article class="feature card">
+          <div class="icon" aria-hidden="true">↑</div>
+          <div>
+            <h3>Most‑followed voices</h3>
+            <p>Quickly find popular reviewers worth following to jump‑start a high‑signal feed.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (static copy for a static app) -->
+    <section id="how-it-works" class="card" style="padding:18px; margin-bottom:40px">
+      <h2 style="font-size:20px; margin:0 0 8px">How it works</h2>
+      <ol style="margin:0; padding-left:18px; color:var(--muted)">
+        <li>Review products with a star rating and short text.</li>
+        <li>Follow reviewers whose opinions you trust.</li>
+        <li>Filter rankings by <i>everyone</i> or <i>people you follow</i> and explore similarity via Jaccard distance.</li>
+      </ol>
+    </section>
+  </main>
 
   <footer>
-    <p>© 2025 Trustworthy Product Reviews | Built on Microsoft Azure</p>
+    <div class="container" style="display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap">
+      <span>© <span id="y"></span> Trustworthy Product Reviews Group 24</span>
+    </div>
   </footer>
+
+  <noscript>
+    <div class="container" style="margin:10px 0 40px; color:#ffcc88">JavaScript is disabled. The sign‑in button is a regular link and will still redirect you correctly.</div>
+  </noscript>
+
+  <script>
+    // Year stamp
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
